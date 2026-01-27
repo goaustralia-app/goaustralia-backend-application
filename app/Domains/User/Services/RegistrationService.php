@@ -3,18 +3,18 @@
 namespace App\Domains\User\Services;
 
 use App\Domains\EmailVerification\Contracts\EmailVerificationRepositoryContract;
-use App\Domains\EmailVerification\Services\EmailService;
 use App\Domains\User\Contracts\UserRepositoryContract;
 use App\Enums\EmailVerificationEnum;
+use App\Mail\OtpVerificationMail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class RegistrationService
 {
     public function __construct(
         private UserRepositoryContract $userRepository,
-        private EmailVerificationRepositoryContract $emailVerificationRepository,
-        private EmailService $emailService
+        private EmailVerificationRepositoryContract $emailVerificationRepository
     ) {}
 
     public function register(array $data): array
@@ -27,6 +27,7 @@ class RegistrationService
 
         if ($existingUser && ! $existingUser->email_verified_at) {
             $this->emailVerificationRepository->deleteByEmail($data['email'], EmailVerificationEnum::REGISTRATION);
+            $user = $existingUser;
         } else {
             $data['password'] = Hash::make($data['password']);
             $user = $this->userRepository->create($data);
@@ -41,11 +42,17 @@ class RegistrationService
             'expires_at' => Carbon::now()->addMinutes(5),
         ]);
 
-        $this->emailService->sendVerificationEmail($data['email'], $verificationCode);
+        Mail::to($data['email'])->queue(new OtpVerificationMail($verificationCode, $data['email']));
+
+        $accessToken = $user->createToken('GoAustralia Access Token');
 
         return [
             'message' => 'Registration successful. Please check your email for verification code.',
+            'user' => $user,
             'email' => $data['email'],
+            'access_token' => $accessToken->accessToken,
+            'refresh_token' => $accessToken->token->refresh_token,
+            'expires_at' => $accessToken->token->expires_at,
         ];
     }
 

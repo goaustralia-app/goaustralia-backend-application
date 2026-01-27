@@ -1,0 +1,43 @@
+id: 74478
+name: goaustralia
+environments:
+    production:
+        memory: 1024
+        cli-memory: 512
+        queue-timeout: 900
+        # runtime: 'php-8.3:al2'
+        runtime: 'docker'
+        dockerfile: 'staging.Dockerfile'
+        database: visitormanagement
+        storage: goaustralia
+        build:
+            - 'COMPOSER_MIRROR_PATH_REPOS=1 composer install'
+            - 'php artisan event:cache'
+            - 'composer dump-autoload'
+            - 'php artisan config:clear'
+            - 'php artisan config:cache'
+            # - 'php artisan filament:optimize-clear'
+            # - 'php artisan filament:optimize'
+        deploy:
+            - 'php artisan migrate --force'
+            # - 'php artisan db:seed --force'
+    staging:
+        memory: 1024
+        cli-memory: 512
+        queue-timeout: 900
+        # runtime: 'php-8.3:al2'
+        runtime: 'docker'
+        dockerfile: 'staging.Dockerfile'
+        database: visitormanagement
+        storage: goaustralia
+        build:
+            - 'COMPOSER_MIRROR_PATH_REPOS=1 composer install'
+            - 'php artisan event:cache'
+            - 'composer dump-autoload'
+            - 'php artisan config:clear'
+            - 'php artisan config:cache'
+            # - 'php artisan filament:optimize-clear'
+            # - 'php artisan filament:optimize'
+        deploy:
+            - 'php artisan migrate --force'
+            # - 'php artisan db:seed --force'

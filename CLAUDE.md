@@ -10,6 +10,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 
 - php - 8.3.26
 - laravel/framework (LARAVEL) - v12
+- laravel/passport (PASSPORT) - v13
 - laravel/prompts (PROMPTS) - v0
 - laravel/mcp (MCP) - v0
 - laravel/pint (PINT) - v1

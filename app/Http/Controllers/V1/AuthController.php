@@ -23,7 +23,15 @@ class AuthController extends BaseController
         try {
             $result = $this->registrationService->register($request->validated());
 
-            return $this->successResponse($result['message'], ['email' => $result['email']], 201);
+            $data = [
+                'user' => $result['user'],
+                'email' => $result['email'],
+                'access_token' => $result['access_token'],
+                'refresh_token' => $result['refresh_token'],
+                'expires_at' => $result['expires_at'],
+            ];
+
+            return $this->successResponse($result['message'], $data, 201);
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }
@@ -37,7 +45,11 @@ class AuthController extends BaseController
                 $request->verification_code
             );
 
-            return $this->successResponse($result['message'], ['email' => $result['email']]);
+            $data = [
+                'email' => $result['email'],
+            ];
+
+            return $this->successResponse($result['message'], $data);
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }

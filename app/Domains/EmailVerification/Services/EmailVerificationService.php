@@ -5,14 +5,15 @@ namespace App\Domains\EmailVerification\Services;
 use App\Domains\EmailVerification\Contracts\EmailVerificationRepositoryContract;
 use App\Domains\User\Contracts\UserRepositoryContract;
 use App\Enums\EmailVerificationEnum;
+use App\Mail\OtpVerificationMail;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class EmailVerificationService
 {
     public function __construct(
         private UserRepositoryContract $userRepository,
-        private EmailVerificationRepositoryContract $emailVerificationRepository,
-        private EmailService $emailService
+        private EmailVerificationRepositoryContract $emailVerificationRepository
     ) {}
 
     public function verifyEmail(string $email, string $code): array
@@ -34,10 +35,6 @@ class EmailVerificationService
             throw new \Exception('Invalid verification code.');
         }
 
-        $user = $this->userRepository->findByEmail($email);
-        if ($user) {
-            $this->userRepository->markEmailAsVerified($user);
-        }
 
         $verification->update(['is_verified' => true]);
 
@@ -67,7 +64,7 @@ class EmailVerificationService
             'is_verified' => false,
         ]);
 
-        $this->emailService->sendVerificationEmail($email, $verificationCode);
+        Mail::to($email)->queue(new OtpVerificationMail($verificationCode, $email));
 
         return [
             'message' => 'Verification code resent successfully.',
@@ -89,7 +86,7 @@ class EmailVerificationService
             'is_verified' => false,
         ]);
 
-        $this->emailService->sendVerificationEmail($email, $verificationCode);
+        Mail::to($email)->queue(new OtpVerificationMail($verificationCode, $email));
 
         return [
             'message' => 'Verification code sent successfully.',
