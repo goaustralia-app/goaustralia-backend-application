@@ -38,6 +38,12 @@
             text-align: center;
         }
         
+        .header img {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 16px;
+        }
+        
         .header h1 {
             color: #F2F6FF;
             font-size: 32px;
@@ -171,6 +177,10 @@
                 letter-spacing: 4px;
             }
             
+            .header img {
+                max-width: 150px;
+            }
+            
             .header h1 {
                 font-size: 24px;
             }
@@ -184,7 +194,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>GoAustralia</h1>
+            <img src="{{ config('constants.logo') }}" alt="GoAustralia Logo">
             <p>Your Journey to Australia Starts Here</p>
         </div>
 

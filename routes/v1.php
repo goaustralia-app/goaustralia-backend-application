@@ -9,6 +9,8 @@ Route::prefix('auth')->group(function () {
     Route::post('/verify-email', [AuthController::class, 'verifyEmail']);
     Route::post('/resend-otp', [AuthController::class, 'resendOtp']);
     Route::post('/send-otp', [AuthController::class, 'sendOtp']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/social-login', [AuthController::class, 'socialLogin']);
 });
 
 Route::prefix('countries')->group(function () {

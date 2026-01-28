@@ -6,6 +6,7 @@ use App\Domains\EmailVerification\Contracts\EmailVerificationRepositoryContract;
 use App\Domains\User\Contracts\UserRepositoryContract;
 use App\Enums\EmailVerificationEnum;
 use App\Mail\OtpVerificationMail;
+use App\Mail\WelcomeMail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 
@@ -35,8 +36,14 @@ class EmailVerificationService
             throw new \Exception('Invalid verification code.');
         }
 
-
         $verification->update(['is_verified' => true]);
+
+        $user = $this->userRepository->findByEmail($email);
+        if ($user && ! $user->email_verified_at) {
+            $user->update(['email_verified_at' => Carbon::now()]);
+
+            Mail::to($email)->queue(new WelcomeMail($user));
+        }
 
         return [
             'message' => 'Email verified successfully.',
