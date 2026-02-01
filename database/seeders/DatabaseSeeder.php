@@ -16,6 +16,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             CountriesSeeder::class,
+            StateSeeder::class,
+            VisaSubclassSeeder::class,
+            SkilledOccupationListSeeder::class,
         ]);
     }
 }

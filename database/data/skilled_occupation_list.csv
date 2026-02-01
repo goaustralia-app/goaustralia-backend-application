@@ -1,0 +1,254 @@
+occupation,anzsco_code,assessing_authority,list
+Accommodation and Hospitality Managers nec,141999,VETASSESS,STSOL
+Accountant (General),221111,CAANZ/CPA/IPA,MLTSSL
+Actuary,224111,VETASSESS,MLTSSL
+Acupuncturist,252211,Chinese Medicine Board of Australia,STSOL
+Advertising Manager,131113,AIM,STSOL
+Advertising Specialist,225111,VETASSESS,STSOL
+Aeronautical Engineer,233911,Engineers Australia,MLTSSL
+Aeroplane Pilot,231111,CASA,ROL
+Agricultural Consultant,234111,VETASSESS,MLTSSL
+Agricultural Engineer,233912,Engineers Australia,MLTSSL
+Agricultural Scientist,234112,VETASSESS,MLTSSL
+Agricultural Technician,311111,VETASSESS,ROL
+Airconditioning and Mechanical Services Plumber,334112,TRA,MLTSSL
+Airconditioning and Refrigeration Mechanic,342111,TRA,MLTSSL
+Aircraft Maintenance Engineer (Avionics),323111,TRA,STSOL
+Aircraft Maintenance Engineer (Mechanical),323112,TRA,STSOL
+Aircraft Maintenance Engineer (Structures),323113,TRA,STSOL
+Ambulance Officer,411111,VETASSESS,STSOL
+Amusement Centre Manager,149111,VETASSESS,ROL
+Anaesthetic Technician,311211,VETASSESS,STSOL
+Anaesthetist,253211,Medical Board of Australia,ROL
+Analyst Programmer,261311,ACS,MLTSSL
+Animal Attendants and Trainers nec,361199,VETASSESS,STSOL
+Apiarist,121311,VETASSESS,STSOL
+Aquaculture Farmer,121111,VETASSESS,STSOL
+Arborist,362212,TRA,STSOL
+Architect,232111,AACA,MLTSSL
+Architectural Draftsperson,312111,VETASSESS,STSOL
+Architectural Technicians nec,312199,VETASSESS,STSOL
+Art Teacher (Private Tuition),249211,VETASSESS,STSOL
+Artistic Director,212111,VETASSESS,MLTSSL
+Arts Administrator or Manager,139911,VETASSESS,MLTSSL
+Audiologist,252711,VETASSESS,MLTSSL
+Automotive Electrician,321111,TRA,MLTSSL
+Baker,351111,TRA,STSOL
+Barrister,271111,State or Territory Legal Authority,MLTSSL
+Beef Cattle Farmer,121312,VETASSESS,ROL
+Biochemist,234513,VETASSESS,MLTSSL
+Biomedical Engineer,233913,Engineers Australia,MLTSSL
+Biotechnologist,234514,VETASSESS,MLTSSL
+Boat Builder and Repairer,399111,TRA,MLTSSL
+Book or Script Editor,212212,VETASSESS,STSOL
+Botanist,234515,VETASSESS,MLTSSL
+Bricklayer,331111,TRA,MLTSSL
+Building Inspector,312113,VETASSESS,STSOL
+Business Analyst,261111,ACS,MLTSSL
+Butcher or Smallgoods Maker,351211,TRA,STSOL
+Cabinetmaker,394111,TRA,MLTSSL
+Cafe or Restaurant Manager,141111,VETASSESS,STSOL
+Carpenter,331212,TRA,MLTSSL
+Carpenter and Joiner,331211,TRA,MLTSSL
+Chef,351311,TRA,MLTSSL
+Chemical Engineer,233111,Engineers Australia,MLTSSL
+Chemist,234211,VETASSESS,MLTSSL
+Child Care Centre Manager,134111,ACECQA,STSOL
+Chiropractor,252111,Chiropractic Board of Australia,MLTSSL
+Civil Engineer,233211,Engineers Australia,MLTSSL
+Civil Engineering Draftsperson,312211,Engineers Australia,ROL
+Civil Engineering Technician,312212,Engineers Australia,ROL
+Clinical Psychologist,272311,Psychology Board of Australia,MLTSSL
+Computer Network and Systems Engineer,263111,ACS,MLTSSL
+Construction Project Manager,133111,AIM/VETASSESS,MLTSSL
+Contract Administrator,511112,VETASSESS,STSOL
+Cook,351411,TRA,STSOL
+Copywriter,225412,VETASSESS,STSOL
+Corporate Services Manager,132111,AIM,MLTSSL
+Counsellor,272111,VETASSESS,STSOL
+Database Administrator,262111,ACS,MLTSSL
+Dental Hygienist,411211,Dental Board of Australia,MLTSSL
+Dental Practitioner,252312,Dental Board of Australia,MLTSSL
+Dental Technician,411213,TRA,STSOL
+Dentist,252312,Dental Board of Australia,MLTSSL
+Dermatologist,253911,Medical Board of Australia,MLTSSL
+Developer Programmer,261312,ACS,MLTSSL
+Diesel Motor Mechanic,321212,TRA,MLTSSL
+Early Childhood Teacher,241111,AITSL,MLTSSL
+Economist,224311,VETASSESS,MLTSSL
+Electrical Engineer,233311,Engineers Australia,MLTSSL
+Electrician (General),341111,TRA,MLTSSL
+Electronic Engineer,233411,Engineers Australia,MLTSSL
+Emergency Medicine Specialist,253912,Medical Board of Australia,MLTSSL
+Engineering Manager,133211,Engineers Australia,MLTSSL
+Engineering Professionals nec,233999,Engineers Australia,MLTSSL
+Environmental Consultant,234312,VETASSESS,MLTSSL
+Environmental Engineer,233915,Engineers Australia,MLTSSL
+External Auditor,221213,CAANZ/CPA/IPA,MLTSSL
+Facilities Manager,149913,VETASSESS,STSOL
+Family and Marriage Counsellor,272113,VETASSESS,STSOL
+Farrier,361113,TRA,STSOL
+Fibrous Plasterer,333211,TRA,STSOL
+Film and Video Editor,212314,VETASSESS,STSOL
+Financial Investment Adviser,222311,FASEA,MLTSSL
+Financial Investment Manager,222312,FASEA,MLTSSL
+Financial Manager,132211,AIM,MLTSSL
+Fitness Instructor,452111,VETASSESS,STSOL
+Food Technologist,234212,VETASSESS,MLTSSL
+Forester,234113,VETASSESS,MLTSSL
+General Practitioner,253111,Medical Board of Australia,MLTSSL
+Geologist,234411,VETASSESS,MLTSSL
+Geophysicist,234412,VETASSESS,MLTSSL
+Graphic Designer,232411,VETASSESS,STSOL
+Hairdresser,391111,TRA,STSOL
+Health and Welfare Services Managers nec,134299,VETASSESS,STSOL
+Health Information Manager,224213,VETASSESS,MLTSSL
+Health Promotion Officer,251911,VETASSESS,STSOL
+ICT Business Analyst,261111,ACS,MLTSSL
+ICT Security Specialist,262112,ACS,MLTSSL
+Industrial Engineer,233511,Engineers Australia,MLTSSL
+Industrial Pharmacist,251513,Pharmacy Board of Australia,MLTSSL
+Industrial Relations Manager,132311,AIM,STSOL
+Information and Organisation Professionals nec,224999,VETASSESS,STSOL
+Interior Designer,232511,VETASSESS,STSOL
+Internal Auditor,221214,CAANZ/CPA/IPA,MLTSSL
+Interpreter,272412,NAATI,STSOL
+Landscape Architect,232112,AACA,MLTSSL
+Landscape Gardener,362213,TRA,STSOL
+Lecturer,242111,AITSL,MLTSSL
+Life Scientist (General),234511,VETASSESS,MLTSSL
+Life Scientists nec,234599,VETASSESS,MLTSSL
+Lift Mechanic,341112,TRA,MLTSSL
+Management Accountant,221112,CAANZ/CPA/IPA,MLTSSL
+Management Consultant,224711,VETASSESS,MLTSSL
+Marine Biologist,234516,VETASSESS,MLTSSL
+Marketing Specialist,225113,VETASSESS,STSOL
+Materials Engineer,233112,Engineers Australia,MLTSSL
+Mechanical Engineer,233512,Engineers Australia,MLTSSL
+Media Producer (excluding Video),212112,VETASSESS,STSOL
+Medical Diagnostic Radiographer,251211,Medical Radiation Practice Board,MLTSSL
+Medical Laboratory Scientist,234611,AIMS,MLTSSL
+Medical Practitioners nec,253999,Medical Board of Australia,MLTSSL
+Medical Radiation Therapist,251212,Medical Radiation Practice Board,MLTSSL
+Metal Fabricator,322311,TRA,MLTSSL
+Meteorologist,234911,VETASSESS,MLTSSL
+Microbiologist,234516,VETASSESS,MLTSSL
+Midwife,254111,NMBA,MLTSSL
+Mining Engineer (excluding Petroleum),233611,Engineers Australia,MLTSSL
+Motor Mechanic (General),321211,TRA,MLTSSL
+Multimedia Specialist,261211,ACS,MLTSSL
+Music Teacher (Private Tuition),249214,VETASSESS,STSOL
+Network Administrator,262113,ACS,STSOL
+Network Analyst,263112,ACS,MLTSSL
+Nuclear Medicine Technologist,251214,Medical Radiation Practice Board,MLTSSL
+Occupational Therapist,252411,OT Board of Australia,MLTSSL
+Optometrist,251411,Optometry Board of Australia,MLTSSL
+Orthotist or Prosthetist,251912,OT Board of Australia,MLTSSL
+Painter and Decorator,332211,TRA,STSOL
+Pathologist,253915,Medical Board of Australia,MLTSSL
+Petroleum Engineer,233612,Engineers Australia,MLTSSL
+Physicist,234914,VETASSESS,MLTSSL
+Physiotherapist,252511,Physiotherapy Board of Australia,MLTSSL
+Plumber (General),334111,TRA,MLTSSL
+Podiatrist,252611,Podiatry Board of Australia,MLTSSL
+Primary School Teacher,241213,AITSL,MLTSSL
+Production or Plant Engineer,233513,Engineers Australia,MLTSSL
+Project Builder,133112,TRA,STSOL
+Psychiatrist,253411,Medical Board of Australia,MLTSSL
+Psychologist,272312,Psychology Board of Australia,MLTSSL
+Quantity Surveyor,233213,AIQS,MLTSSL
+Radiologist,253917,Medical Board of Australia,MLTSSL
+Recruitment Consultant,223112,VETASSESS,STSOL
+Registered Nurse (Aged Care),254412,NMBA,MLTSSL
+Registered Nurse (Critical Care and Emergency),254415,NMBA,MLTSSL
+Registered Nurse (Medical),254418,NMBA,MLTSSL
+Registered Nurse (Mental Health),254422,NMBA,MLTSSL
+Registered Nurse (Paediatrics),254425,NMBA,MLTSSL
+Registered Nurses nec,254499,NMBA,MLTSSL
+Secondary School Teacher,241411,AITSL,MLTSSL
+Social Worker,272511,AASW,MLTSSL
+Software Engineer,261313,ACS,MLTSSL
+Speech Pathologist,252712,Speech Pathology Australia,MLTSSL
+Structural Engineer,233214,Engineers Australia,MLTSSL
+Surveyor,232212,Surveyors Board,MLTSSL
+Systems Analyst,261112,ACS,MLTSSL
+Taxation Accountant,221113,CAANZ/CPA/IPA,MLTSSL
+Telecommunications Engineer,263311,Engineers Australia,MLTSSL
+Telecommunications Network Engineer,263312,Engineers Australia,MLTSSL
+Translator,272413,NAATI,STSOL
+University Lecturer,242111,AITSL,MLTSSL
+Veterinarian,234711,AVBC,MLTSSL
+Video Producer,212314,VETASSESS,STSOL
+Web Designer,232414,VETASSESS,STSOL
+Web Developer,261212,ACS,STSOL
+Welder (First Class),322313,TRA,MLTSSL
+Zoologist,234518,VETASSESS,MLTSSL
+Bricklayer,331111,TRA,MLTSSL
+Building Associate,312112,VETASSESS,STSOL
+Building Contractor,133112,TRA,STSOL
+Building Surveyor,232212,AIBS,MLTSSL
+Building Technician,312199,VETASSESS,STSOL
+Business Development Manager,225212,VETASSESS,STSOL
+Call or Contact Centre Manager,149912,VETASSESS,STSOL
+Chemical Technician,311411,VETASSESS,STSOL
+Civil Engineering Technician,312212,Engineers Australia,ROL
+Construction Estimator,312114,VETASSESS,STSOL
+Construction Manager,133111,AIM,MLTSSL
+Drainer,334113,TRA,STSOL
+Economics Teacher,241212,AITSL,MLTSSL
+Electrical Engineering Technician,312312,Engineers Australia,ROL
+Electronic Instrument Trades Worker,342313,TRA,STSOL
+Engineering Technologist,233914,Engineers Australia,MLTSSL
+Environmental Health Officer,251311,VETASSESS,MLTSSL
+External Wall Cladder,333111,TRA,STSOL
+Fire Protection Engineer,233915,Engineers Australia,MLTSSL
+Gasfitter,334114,TRA,STSOL
+Geotechnical Engineer,233212,Engineers Australia,MLTSSL
+Hydrogeologist,234413,VETASSESS,MLTSSL
+ICT Customer Support Officer,313112,ACS,STSOL
+ICT Support Engineer,263212,ACS,ROL
+Instrumentation Engineer,233512,Engineers Australia,MLTSSL
+Intellectual Property Lawyer,271311,Legal Admissions Authority,MLTSSL
+Maintenance Planner,312911,VETASSESS,STSOL
+Management Consultant,224711,VETASSESS,MLTSSL
+Mechanical Engineering Technician,312512,Engineers Australia,ROL
+Migration Agent,272511,OMARA,STSOL
+Occupational Health and Safety Adviser,251312,VETASSESS,MLTSSL
+Organisation and Methods Analyst,224712,VETASSESS,MLTSSL
+Petroleum Technician,311214,VETASSESS,ROL
+Procurement Manager,133611,VETASSESS,MLTSSL
+Quality Assurance Manager,139914,VETASSESS,MLTSSL
+Records Manager,224214,VETASSESS,STSOL
+Roof Plumber,334115,TRA,STSOL
+Shipwright,399112,TRA,MLTSSL
+Signwriter,399611,TRA,STSOL
+Software Tester,261314,ACS,STSOL
+Sonographer,251214,ASAR,MLTSSL
+Supply and Distribution Manager,133611,VETASSESS,MLTSSL
+Technical Sales Representative,225411,VETASSESS,STSOL
+Telecommunications Technician,342414,TRA,STSOL
+Town Planner,232611,VETASSESS,MLTSSL
+Transport Engineer,233215,Engineers Australia,MLTSSL
+University Tutor,242112,AITSL,MLTSSL
+Urban and Regional Planner,232611,VETASSESS,MLTSSL
+Waste Water or Water Plant Operator,399611,VETASSESS,ROL
+Child Care Worker,421111,ACECQA,STSOL
+Early Childhood (Pre-primary School) Teacher,241111,AITSL,MLTSSL
+Enrolled Nurse,411411,NMBA,STSOL
+Nurse Practitioner,254411,NMBA,MLTSSL
+Operating Theatre Technician,311214,VETASSESS,STSOL
+Optical Mechanic,323312,TRA,STSOL
+Orthopaedic Surgeon,253511,Medical Board of Australia,MLTSSL
+Orthoptist,252612,OT Board of Australia,MLTSSL
+Paediatrician,253321,Medical Board of Australia,MLTSSL
+Plastic and Reconstructive Surgeon,253511,Medical Board of Australia,MLTSSL
+Roof Tiler,333311,TRA,STSOL
+Sheetmetal Trades Worker,322211,TRA,MLTSSL
+Stonemason,331112,TRA,STSOL
+Telecommunications Linesworker,342412,TRA,STSOL
+Telecommunications Technical Officer,313212,ACS,ROL
+Tourism and Travel Adviser,451611,VETASSESS,STSOL
+Transport Company Manager,149111,VETASSESS,ROL
+Vehicle Body Builder,324211,TRA,STSOL
+Wall and Floor Tiler,333411,TRA,MLTSSL
+Youth Worker,411716,VETASSESS,STSOL

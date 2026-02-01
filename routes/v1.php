@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\V1\AuthController;
 use App\Http\Controllers\V1\CountryController;
+use App\Http\Controllers\V1\OccupationListController;
+use App\Http\Controllers\V1\VisaSubclassController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -16,4 +18,14 @@ Route::prefix('auth')->group(function () {
 Route::prefix('countries')->group(function () {
     Route::get('/', [CountryController::class, 'index']);
     Route::get('/{id}', [CountryController::class, 'show']);
+});
+
+Route::prefix('occupation-lists')->group(function () {
+    Route::get('/', [OccupationListController::class, 'index']);
+    Route::get('/{id}', [OccupationListController::class, 'show']);
+});
+
+Route::prefix('visa-subclasses')->group(function () {
+    Route::get('/', [VisaSubclassController::class, 'index']);
+    Route::get('/{id}', [VisaSubclassController::class, 'show']);
 });
