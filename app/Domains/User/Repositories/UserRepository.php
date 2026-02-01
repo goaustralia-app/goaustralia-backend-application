@@ -33,4 +33,11 @@ class UserRepository implements UserRepositoryContract
             'email_verified_at' => now(),
         ]);
     }
+
+    public function findByProvider(string $providerName, string $providerId): ?User
+    {
+        return User::where('provider_name', $providerName)
+            ->where('provider_id', $providerId)
+            ->first();
+    }
 }

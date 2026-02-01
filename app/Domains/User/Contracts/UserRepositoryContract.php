@@ -15,4 +15,6 @@ interface UserRepositoryContract
     public function update(User $user, array $data): bool;
 
     public function markEmailAsVerified(User $user): bool;
+
+    public function findByProvider(string $providerName, string $providerId): ?User;
 }

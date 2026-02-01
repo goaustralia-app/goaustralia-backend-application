@@ -20,26 +20,40 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->configurePassportKeys();
+        $this->configurePassport();
     }
 
     /**
-     * Configure Passport encryption keys.
+     * Configure Laravel Passport.
      */
-    private function configurePassportKeys(): void
+    private function configurePassport(): void
     {
-        $privateKeyPath = env('PASSPORT_PRIVATE_KEY');
-        $publicKeyPath = env('PASSPORT_PUBLIC_KEY');
+        // Configure token lifetimes
+        Passport::tokensExpireIn(now()->addDays(15));
+        Passport::refreshTokensExpireIn(now()->addDays(30));
+        Passport::personalAccessTokensExpireIn(now()->addMonths(6));
 
-        if ($privateKeyPath && $publicKeyPath) {
-            // Check if it's a base64 encoded key (for Vapor) or file path
-            if (str_contains($privateKeyPath, 'storage/') || str_contains($privateKeyPath, '/')) {
-                // File path - use default behavior
-                Passport::loadKeysFrom(storage_path());
-            } else {
-                // Base64 encoded keys (for Vapor)
-                Passport::keyPath($privateKeyPath);
-            }
+        // For production (Vapor), handle base64 encoded keys
+        if (app()->environment('production')) {
+            $this->configureVaporKeys();
+        }
+        // For local development, Passport uses default configuration from config/passport.php
+    }
+
+    /**
+     * Configure Passport keys for Vapor deployment.
+     */
+    private function configureVaporKeys(): void
+    {
+        $privateKey = env('PASSPORT_PRIVATE_KEY');
+        $publicKey = env('PASSPORT_PUBLIC_KEY');
+
+        if ($privateKey && $publicKey && str_starts_with($privateKey, 'LS0tLS1CRUdJTi')) {
+            // Decode base64 keys and write to temp files
+            file_put_contents('/tmp/oauth-private.key', base64_decode($privateKey));
+            file_put_contents('/tmp/oauth-public.key', base64_decode($publicKey));
+
+            Passport::loadKeysFrom('/tmp/');
         }
     }
 }

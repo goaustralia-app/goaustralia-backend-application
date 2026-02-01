@@ -7,12 +7,12 @@ use App\Http\Controllers\V1\VisaSubclassController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/verify-email', [AuthController::class, 'verifyEmail']);
-    Route::post('/resend-otp', [AuthController::class, 'resendOtp']);
-    Route::post('/send-otp', [AuthController::class, 'sendOtp']);
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/social-login', [AuthController::class, 'socialLogin']);
+    Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:5,1');
+    Route::post('/verify-email', [AuthController::class, 'verifyEmail'])->middleware('throttle:10,1');
+    Route::post('/resend-otp', [AuthController::class, 'resendOtp'])->middleware('throttle:3,1');
+    Route::post('/send-otp', [AuthController::class, 'sendOtp'])->middleware('throttle:3,1');
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
+    Route::post('/social-login', [AuthController::class, 'socialLogin'])->middleware('throttle:10,1');
 });
 
 Route::prefix('countries')->group(function () {

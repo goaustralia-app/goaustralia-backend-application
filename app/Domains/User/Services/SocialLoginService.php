@@ -3,7 +3,8 @@
 namespace App\Domains\User\Services;
 
 use App\Domains\User\Contracts\UserRepositoryContract;
-use Illuminate\Support\Facades\Http;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Log;
 
 class SocialLoginService
 {
@@ -13,98 +14,123 @@ class SocialLoginService
 
     public function login(array $data): array
     {
-        $socialUserData = $this->validateSocialToken($data['provider'], $data['access_token']);
-
-        if (! $socialUserData) {
-            throw new \Exception('Invalid social login token.');
+        // Validate required fields
+        if (empty($data['email']) || empty($data['name'])) {
+            throw new \Exception('Email and name are required for social login.');
         }
 
-        $user = $this->userRepository->findByEmail($socialUserData['email']);
+        $email = $data['email'];
+        $providerName = $data['provider_name'];
+        $providerId = $data['provider_id'];
 
-        if (! $user) {
-            $userData = [
-                'name' => $socialUserData['name'],
-                'email' => $socialUserData['email'],
-                'email_verified_at' => now(),
-                'password' => null,
-                'country_id' => $data['country_id'] ?? null,
-            ];
+        // Check if user already exists by email
+        $user = $this->userRepository->findByEmail($email);
 
-            $user = $this->userRepository->create($userData);
+        if ($user) {
+            // User exists - update provider data and login
+            $user = $this->updateExistingUserWithProvider($user, $data);
+            $message = 'Social login successful. Welcome back!';
+            $isNewUser = false;
         } else {
-            $user->email_verified_at = $user->email_verified_at ?? now();
-            $user->save();
+            // Check if user exists with same provider credentials
+            $existingProviderUser = $this->findUserByProvider($providerName, $providerId);
+
+            if ($existingProviderUser) {
+                throw new \Exception('This social account is already linked to another user.');
+            }
+
+            // User doesn't exist - create new user
+            $user = $this->createNewSocialUser($data);
+            $message = 'Account created successfully via social login. Welcome!';
+            $isNewUser = true;
         }
 
-        $tokenName = 'GoAustralia Social Access Token';
-        $accessToken = $user->createToken($tokenName);
+        // Generate access token
+        $accessToken = $this->generateAccessToken($user);
+
+        $this->logSocialLogin($user, $providerName, $isNewUser);
 
         return [
-            'message' => 'Social login successful.',
-            'user' => $user->load('country'),
+            'message' => $message,
+            'user' => new UserResource($user->load('country')),
             'access_token' => $accessToken->accessToken,
             'refresh_token' => $accessToken->token->refresh_token,
             'expires_at' => $accessToken->token->expires_at,
+            'is_new_user' => $isNewUser,
         ];
     }
 
-    private function validateSocialToken(string $provider, string $accessToken): ?array
+    /**
+     * Find user by provider credentials.
+     */
+    private function findUserByProvider(string $providerName, string $providerId)
     {
-        return match ($provider) {
-            'google' => $this->validateGoogleToken($accessToken),
-            'facebook' => $this->validateFacebookToken($accessToken),
-            'apple' => $this->validateAppleToken($accessToken),
-            default => null,
-        };
+        return $this->userRepository->findByProvider($providerName, $providerId);
     }
 
-    private function validateGoogleToken(string $accessToken): ?array
+    /**
+     * Update existing user with provider data.
+     */
+    private function updateExistingUserWithProvider($user, array $data)
     {
-        try {
-            $response = Http::get('https://www.googleapis.com/oauth2/v2/userinfo', [
-                'access_token' => $accessToken,
-            ]);
-
-            if ($response->successful()) {
-                $userData = $response->json();
-
-                return [
-                    'name' => $userData['name'] ?? $userData['given_name'] ?? 'User',
-                    'email' => $userData['email'],
-                ];
-            }
-        } catch (\Exception $e) {
-            return null;
+        // Ensure email is verified for social logins
+        if (! $user->email_verified_at) {
+            $user->email_verified_at = now();
         }
 
-        return null;
-    }
-
-    private function validateFacebookToken(string $accessToken): ?array
-    {
-        try {
-            $response = Http::get('https://graph.facebook.com/me', [
-                'access_token' => $accessToken,
-                'fields' => 'id,name,email',
-            ]);
-
-            if ($response->successful()) {
-                $userData = $response->json();
-
-                return [
-                    'name' => $userData['name'] ?? 'User',
-                    'email' => $userData['email'],
-                ];
-            }
-        } catch (\Exception $e) {
-            return null;
+        // Update provider data if not set or if it's from a different provider
+        if (! $user->provider_name || $user->provider_name !== $data['provider_name']) {
+            $user->provider_name = $data['provider_name'];
+            $user->provider_id = $data['provider_id'];
         }
 
-        return null;
+        $user->save();
+
+        return $user;
     }
 
-    private function validateAppleToken(string $accessToken): ?array
+    /**
+     * Create new user from social login data.
+     */
+    private function createNewSocialUser(array $data)
     {
-        return null;
+        $userData = [
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'email_verified_at' => now(), // Social logins are pre-verified
+            'password' => null, // No password for social users
+            'country_id' => $data['country_id'] ?? null,
+            'provider_name' => $data['provider_name'],
+            'provider_id' => $data['provider_id'],
+        ];
+
+        return $this->userRepository->create($userData);
+    }
+
+    /**
+     * Generate access token for user.
+     */
+    private function generateAccessToken($user)
+    {
+        $tokenName = 'GoAustralia Social Access Token';
+        $scopes = ['*'];
+
+        return $user->createToken($tokenName, $scopes);
+    }
+
+    /**
+     * Log social login activity.
+     */
+    private function logSocialLogin($user, string $providerName, bool $isNewUser): void
+    {
+        Log::info('Social login', [
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'provider' => $providerName,
+            'is_new_user' => $isNewUser,
+            'ip' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+            'timestamp' => now(),
+        ]);
     }
 }

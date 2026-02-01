@@ -15,9 +15,16 @@ class LoginRequest extends FormRequest
     {
         return [
             'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', 'string', 'min:8'],
+            'password' => ['required', 'string', 'min:8', 'max:128'],
             'remember' => ['nullable', 'boolean'],
         ];
+    }
+
+    public function prepareForValidation(): void
+    {
+        $this->merge([
+            'email' => filter_var(strtolower(trim($this->email ?? '')), FILTER_SANITIZE_EMAIL),
+        ]);
     }
 
     public function messages(): array
