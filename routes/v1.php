@@ -32,5 +32,6 @@ Route::prefix('visa-subclasses')->group(function () {
 });
 
 Route::prefix('points-calculator')->group(function () {
-    Route::get('/q&a', [EoiController::class, 'getQuestions']);
+    Route::get('/questions', [EoiController::class, 'getQuestions']);
+    Route::post('/submit', [EoiController::class, 'submitCalculator']);
 });

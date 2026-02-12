@@ -11,7 +11,7 @@ class EoiUserResponse extends Model
         'user_id',
         'eoi_question_id',
         'eoi_answer_id',
-        'session_id',
+        'points',
     ];
 
     public function user(): BelongsTo
@@ -34,8 +34,10 @@ class EoiUserResponse extends Model
         return $query->where('user_id', $userId);
     }
 
-    public function scopeForSession($query, $sessionId)
+    protected function casts(): array
     {
-        return $query->where('session_id', $sessionId);
+        return [
+            'points' => 'integer',
+        ];
     }
 }

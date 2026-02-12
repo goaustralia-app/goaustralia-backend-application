@@ -16,11 +16,9 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('eoi_question_id')->constrained()->cascadeOnDelete();
             $table->foreignId('eoi_answer_id')->constrained()->cascadeOnDelete();
-            $table->string('session_id')->nullable();
             $table->timestamps();
 
             $table->index(['user_id', 'eoi_question_id']);
-            $table->index('session_id');
         });
     }
 
