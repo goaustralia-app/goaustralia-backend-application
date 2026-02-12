@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             StateSeeder::class,
             VisaSubclassSeeder::class,
             SkilledOccupationListSeeder::class,
+            EoiQuestionSeeder::class,
         ]);
     }
 }

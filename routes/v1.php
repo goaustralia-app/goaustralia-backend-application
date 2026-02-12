@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\EoiController;
 use App\Http\Controllers\V1\AuthController;
 use App\Http\Controllers\V1\CountryController;
 use App\Http\Controllers\V1\OccupationListController;
@@ -28,4 +29,8 @@ Route::prefix('occupation-lists')->group(function () {
 Route::prefix('visa-subclasses')->group(function () {
     Route::get('/', [VisaSubclassController::class, 'index']);
     Route::get('/{id}', [VisaSubclassController::class, 'show']);
+});
+
+Route::prefix('points-calculator')->group(function () {
+    Route::get('/q&a', [EoiController::class, 'getQuestions']);
 });
