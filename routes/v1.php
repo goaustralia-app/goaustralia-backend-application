@@ -16,6 +16,13 @@ Route::prefix('auth')->group(function () {
     Route::post('/social-login', [AuthController::class, 'socialLogin'])->middleware('throttle:10,1');
 });
 
+Route::middleware('auth:api')->group(function() {
+    Route::prefix('points-calculator')->group(function () {
+        Route::post('/submit', [EoiController::class, 'submitCalculator']);
+        Route::get('/suggestions', [EoiController::class, 'getSuggestions']);
+    });
+});
+
 Route::prefix('countries')->group(function () {
     Route::get('/', [CountryController::class, 'index']);
     Route::get('/{id}', [CountryController::class, 'show']);
@@ -33,5 +40,7 @@ Route::prefix('visa-subclasses')->group(function () {
 
 Route::prefix('points-calculator')->group(function () {
     Route::get('/questions', [EoiController::class, 'getQuestions']);
-    Route::post('/submit', [EoiController::class, 'submitCalculator']);
+    
 });
+
+
