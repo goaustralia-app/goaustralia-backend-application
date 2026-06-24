@@ -6,8 +6,8 @@ environments:
         cli-memory: 512
         queue-timeout: 900
         # runtime: 'php-8.3:al2'
-        runtime: 'docker'
-        dockerfile: 'staging.Dockerfile'
+        runtime: 'docker-arm'
+        dockerfile: 'production.Dockerfile'
         database: visitormanagement
         storage: goaustralia
         build:
@@ -26,7 +26,7 @@ environments:
         cli-memory: 512
         queue-timeout: 900
         # runtime: 'php-8.3:al2'
-        runtime: 'docker'
+        runtime: 'docker-arm'
         dockerfile: 'staging.Dockerfile'
         database: visitormanagement
         storage: goaustralia

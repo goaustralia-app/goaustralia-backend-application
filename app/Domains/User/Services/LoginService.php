@@ -3,7 +3,6 @@
 namespace App\Domains\User\Services;
 
 use App\Domains\User\Contracts\UserRepositoryContract;
-use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -35,20 +34,14 @@ class LoginService
             throw new \Exception('Invalid credentials provided.');
         }
 
-        $tokenName = 'GoAustralia Access Token';
-        $scopes = ['*'];
-
-        // Create token (expiration is handled by Passport configuration)
-        $accessToken = $user->createToken($tokenName, $scopes);
+        $token = $user->createToken('GoAustralia Access Token');
 
         $this->logSuccessfulLogin($user->id, $email);
 
         return [
             'message' => 'Login successful.',
-            'user' => new UserResource($user->load('country')),
-            'access_token' => $accessToken->accessToken,
-            'refresh_token' => $accessToken->token->refresh_token,
-            'expires_at' => $accessToken->token->expires_at,
+            'user' => $user->load('country'),
+            'access_token' => $token->plainTextToken,
         ];
     }
 

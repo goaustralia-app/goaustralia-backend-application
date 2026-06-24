@@ -13,6 +13,7 @@ use App\Http\Requests\ResendOtpRequest;
 use App\Http\Requests\SendOtpRequest;
 use App\Http\Requests\SocialLoginRequest;
 use App\Http\Requests\VerifyEmailRequest;
+use App\Http\Resources\AuthResource;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends BaseController
@@ -33,8 +34,6 @@ class AuthController extends BaseController
                 'user' => $result['user'],
                 'email' => $result['email'],
                 'access_token' => $result['access_token'],
-                'refresh_token' => $result['refresh_token'],
-                'expires_at' => $result['expires_at'],
             ];
 
             return $this->successResponse($result['message'], $data, 201);
@@ -77,7 +76,7 @@ class AuthController extends BaseController
         try {
             $result = $this->emailVerificationService->sendOtp($request->email);
 
-            return $this->successResponse($result['message'], ['email' => $result['email']]);
+            return $this->successResponse($result['message'], ['email' => $result['email'], 'otp' => $result['otp']]);
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }
@@ -88,14 +87,7 @@ class AuthController extends BaseController
         try {
             $result = $this->loginService->login($request->validated());
 
-            $data = [
-                'user' => $result['user'],
-                'access_token' => $result['access_token'],
-                'refresh_token' => $result['refresh_token'],
-                'expires_at' => $result['expires_at'],
-            ];
-
-            return $this->successResponse($result['message'], $data);
+            return $this->successResponse($result['message'], new AuthResource($result));
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 401);
         }
@@ -106,14 +98,7 @@ class AuthController extends BaseController
         try {
             $result = $this->socialLoginService->login($request->validated());
 
-            $data = [
-                'user' => $result['user'],
-                'access_token' => $result['access_token'],
-                'refresh_token' => $result['refresh_token'],
-                'expires_at' => $result['expires_at'],
-            ];
-
-            return $this->successResponse($result['message'], $data);
+            return $this->successResponse($result['message'], new AuthResource($result));
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }

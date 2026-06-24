@@ -3,7 +3,6 @@
 namespace App\Domains\User\Services;
 
 use App\Domains\User\Contracts\UserRepositoryContract;
-use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Log;
 
 class SocialLoginService
@@ -52,10 +51,8 @@ class SocialLoginService
 
         return [
             'message' => $message,
-            'user' => new UserResource($user->load('country')),
-            'access_token' => $accessToken->accessToken,
-            'refresh_token' => $accessToken->token->refresh_token,
-            'expires_at' => $accessToken->token->expires_at,
+            'user' => $user->load('country'),
+            'access_token' => $accessToken->plainTextToken,
             'is_new_user' => $isNewUser,
         ];
     }
@@ -112,10 +109,7 @@ class SocialLoginService
      */
     private function generateAccessToken($user)
     {
-        $tokenName = 'GoAustralia Social Access Token';
-        $scopes = ['*'];
-
-        return $user->createToken($tokenName, $scopes);
+        return $user->createToken('GoAustralia Social Access Token');
     }
 
     /**

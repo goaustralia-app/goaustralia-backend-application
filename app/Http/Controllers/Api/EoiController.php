@@ -10,6 +10,7 @@ use App\Http\Resources\EoiSuggestionsResource;
 use App\Models\EoiAnswer;
 use App\Models\EoiQuestion;
 use App\Models\EoiUserResponse;
+use App\Models\PointsCalculator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -38,80 +39,38 @@ class EoiController extends Controller
             DB::beginTransaction();
 
             $userId = Auth::id();
-            
-            if (!$userId) {
+
+            if (! $userId) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Authentication required to submit EOI calculator responses.',
                 ], 401);
             }
 
-            $responses = $request->responses;
-
-            $categoryPoints = [];
-            $totalPoints = 0;
-            $selectedVisaSubclass = null;
-            $questionDetails = [];
-
-            foreach ($responses as $responseData) {
+            foreach ($request->responses as $responseData) {
                 $answer = EoiAnswer::with('question')->findOrFail($responseData['answer_id']);
 
-                $category = $answer->question->category;
-                $points = $answer->points;
-
-                EoiUserResponse::updateOrCreate(
+                PointsCalculator::updateOrCreate(
                     [
                         'user_id' => $userId,
                         'eoi_question_id' => $responseData['question_id'],
                     ],
                     [
                         'eoi_answer_id' => $responseData['answer_id'],
-                        'points' => $points,
+                        'points' => $answer->points,
                     ]
                 );
-
-                if ($category === 'Visa Selection') {
-                    $selectedVisaSubclass = $this->extractVisaSubclass($answer->answer_text);
-                } else {
-                    if (! isset($categoryPoints[$category])) {
-                        $categoryPoints[$category] = 0;
-                    }
-                    $categoryPoints[$category] += $points;
-                    $totalPoints += $points;
-                }
-
-                $questionDetails[] = [
-                    'category' => $category,
-                    'question' => $answer->question->question,
-                    'answer' => $answer->answer_text,
-                    'points' => $points,
-                ];
             }
-
-            $nominationPoints = $this->calculateNominationPoints($selectedVisaSubclass);
-            $finalPoints = $totalPoints + $nominationPoints;
 
             DB::commit();
 
-            $resultData = [
-                'selected_visa_subclass' => $selectedVisaSubclass,
-                'points_breakdown' => [
-                    'categories' => $categoryPoints,
-                    'base_points' => $totalPoints,
-                    'nomination_points' => $nominationPoints,
-                    'final_points' => $finalPoints,
-                ],
-                'question_details' => $questionDetails,
-                'eligibility' => [
-                    'meets_minimum' => $finalPoints >= 65,
-                    'minimum_required' => 65,
-                    'points_difference' => $finalPoints - 65,
-                ],
-            ];
+            $userResponses = PointsCalculator::with(['question', 'answer'])
+                ->where('user_id', $userId)
+                ->get();
 
             return response()->json([
                 'success' => true,
-                'data' => new EoiCalculatorResultResource($resultData),
+                'data' => new EoiCalculatorResultResource($this->buildPointsBreakdown($userResponses)),
                 'message' => 'EOI calculator submission processed successfully',
             ]);
 
@@ -123,6 +82,95 @@ class EoiController extends Controller
                 'message' => 'Error processing EOI calculator submission: '.$e->getMessage(),
             ], 500);
         }
+    }
+
+    public function getPointsBreakdown(): JsonResponse
+    {
+        try {
+            $userId = Auth::id();
+
+            if (! $userId) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Authentication required.',
+                ], 401);
+            }
+
+            $userResponses = PointsCalculator::with(['question', 'answer'])
+                ->where('user_id', $userId)
+                ->get();
+
+            if ($userResponses->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No submission found. Please complete the points calculator first.',
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => new EoiCalculatorResultResource($this->buildPointsBreakdown($userResponses)),
+                'message' => 'Points breakdown retrieved successfully',
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving points breakdown: '.$e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Build the points breakdown result data from stored user responses.
+     *
+     * @param  \Illuminate\Support\Collection<int, EoiUserResponse>  $userResponses
+     * @return array<string, mixed>
+     */
+    private function buildPointsBreakdown(\Illuminate\Support\Collection $userResponses): array
+    {
+        $categoryPoints = [];
+        $totalPoints = 0;
+        $selectedVisaSubclass = null;
+        $questionDetails = [];
+
+        foreach ($userResponses as $response) {
+            $category = $response->question->category;
+            $points = $response->points;
+
+            if ($category === 'Visa Selection') {
+                $selectedVisaSubclass = $this->extractVisaSubclass($response->answer->answer_text);
+            } else {
+                $categoryPoints[$category] = ($categoryPoints[$category] ?? 0) + $points;
+                $totalPoints += $points;
+            }
+
+            $questionDetails[] = [
+                'category' => $category,
+                'question' => $response->question->question,
+                'answer' => $response->answer->answer_text,
+                'points' => $points,
+            ];
+        }
+
+        $nominationPoints = $this->calculateNominationPoints($selectedVisaSubclass);
+        $finalPoints = $totalPoints + $nominationPoints;
+
+        return [
+            'selected_visa_subclass' => $selectedVisaSubclass,
+            'points_breakdown' => [
+                'categories' => $categoryPoints,
+                'base_points' => $totalPoints,
+                'nomination_points' => $nominationPoints,
+                'final_points' => $finalPoints,
+            ],
+            'question_details' => $questionDetails,
+            'eligibility' => [
+                'meets_minimum' => $finalPoints >= 65,
+                'minimum_required' => 65,
+                'points_difference' => $finalPoints - 65,
+            ],
+        ];
     }
 
     private function extractVisaSubclass(string $answerText): ?string
@@ -147,8 +195,8 @@ class EoiController extends Controller
     {
         try {
             $userId = Auth::id();
-            
-            if (!$userId) {
+
+            if (! $userId) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Authentication required to get personalized suggestions.',
@@ -199,7 +247,7 @@ class EoiController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error generating suggestions: ' . $e->getMessage(),
+                'message' => 'Error generating suggestions: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -207,6 +255,7 @@ class EoiController extends Controller
     private function getCurrentVisaSubclass($userResponses): ?string
     {
         $visaResponse = $userResponses->firstWhere('question.category', 'Visa Selection');
+
         return $visaResponse ? $this->extractVisaSubclass($visaResponse->answer->answer_text) : null;
     }
 
@@ -359,10 +408,12 @@ class EoiController extends Controller
         ];
 
         foreach ($visaOptions as $subclass => $details) {
-            if ($subclass === $currentSubclass) continue;
+            if ($subclass === $currentSubclass) {
+                continue;
+            }
 
             $totalPoints = $currentPoints + $details['bonus'];
-            
+
             $alternatives[] = [
                 'subclass' => $subclass,
                 'name' => $details['name'],
@@ -383,8 +434,8 @@ class EoiController extends Controller
         }
 
         return match ($subclass) {
-            '189' => $totalPoints >= 85 
-                ? 'Excellent option - no nomination required, high competitive score' 
+            '189' => $totalPoints >= 85
+                ? 'Excellent option - no nomination required, high competitive score'
                 : 'Good option - independent visa with no nomination requirements',
             '190' => 'Good option - requires state nomination but adds 5 bonus points',
             '491' => 'Excellent option for regional migration - adds 15 bonus points and pathway to PR',
@@ -395,7 +446,7 @@ class EoiController extends Controller
     private function getPriorityRecommendations(array $suggestions): array
     {
         $top3 = array_slice($suggestions, 0, 3);
-        
+
         return [
             'immediate_actions' => array_slice($top3, 0, 1),
             'medium_term_goals' => array_slice($top3, 1, 2),

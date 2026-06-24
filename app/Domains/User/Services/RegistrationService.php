@@ -34,14 +34,13 @@ class RegistrationService
 
         Mail::to($data['email'])->queue(new WelcomeMail($user));
 
-        $accessToken = $user->createToken('GoAustralia Access Token');
+        $token = $user->createToken('GoAustralia Access Token');
 
         return [
             'message' => 'Registration successful.',
             'user' => $user,
-            'access_token' => $accessToken->accessToken,
-            'refresh_token' => $accessToken->token->refresh_token,
-            'expires_at' => $accessToken->token->expires_at,
+            'email' => $user->email,
+            'access_token' => $token->plainTextToken,
         ];
     }
 }
