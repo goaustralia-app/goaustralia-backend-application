@@ -65,7 +65,7 @@ class AuthController extends BaseController
         try {
             $result = $this->emailVerificationService->resendOtp($request->email);
 
-            return $this->successResponse($result['message'], ['email' => $result['email']]);
+            return $this->successResponse($result['message'], ['email' => $result['email'], 'otp' => $result['otp']]);
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }

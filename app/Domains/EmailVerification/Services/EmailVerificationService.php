@@ -76,6 +76,7 @@ class EmailVerificationService
         return [
             'message' => 'Verification code resent successfully.',
             'email' => $email,
+            'otp' => $verificationCode,
         ];
     }
 
