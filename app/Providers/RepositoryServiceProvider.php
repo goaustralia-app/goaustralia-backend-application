@@ -10,6 +10,8 @@ use App\Domains\InvitationRound\Repositories\InvitationRoundRepository;
 use App\Domains\InvitationRound\Repositories\InvitationRoundRepositoryInterface;
 use App\Domains\OccupationList\Repositories\OccupationListRepository;
 use App\Domains\OccupationList\Repositories\OccupationListRepositoryInterface;
+use App\Domains\Onboarding\Repositories\OnboardingRepository;
+use App\Domains\Onboarding\Repositories\OnboardingRepositoryInterface;
 use App\Domains\StatesSkilledOccupationList\Repositories\StatesSkilledOccupationListRepository;
 use App\Domains\StatesSkilledOccupationList\Repositories\StatesSkilledOccupationListRepositoryInterface;
 use App\Domains\User\Contracts\UserRepositoryContract;
@@ -29,6 +31,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(VisaSubclassRepositoryInterface::class, VisaSubclassRepository::class);
         $this->app->bind(InvitationRoundRepositoryInterface::class, InvitationRoundRepository::class);
         $this->app->bind(StatesSkilledOccupationListRepositoryInterface::class, StatesSkilledOccupationListRepository::class);
+        $this->app->bind(OnboardingRepositoryInterface::class, OnboardingRepository::class);
     }
 
     public function boot(): void

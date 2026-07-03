@@ -6,6 +6,7 @@ use App\Http\Controllers\V1\CountryController;
 use App\Http\Controllers\V1\EoiSubmissionController;
 use App\Http\Controllers\V1\InvitationRoundController;
 use App\Http\Controllers\V1\OccupationListController;
+use App\Http\Controllers\V1\OnboardingController;
 use App\Http\Controllers\V1\StatesSkilledOccupationListController;
 use App\Http\Controllers\V1\VisaSubclassController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,12 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/', [EoiSubmissionController::class, 'store']);
         Route::get('/{id}', [EoiSubmissionController::class, 'show']);
         Route::put('/{id}', [EoiSubmissionController::class, 'update']);
+    });
+
+    Route::prefix('onboarding')->group(function () {
+        Route::post('/q&a', [OnboardingController::class, 'submitAnswers']);
+        Route::get('/q&a', [OnboardingController::class, 'getAnswers']);
+        Route::put('/q&a', [OnboardingController::class, 'updateAnswers']);
     });
 });
 
@@ -62,5 +69,8 @@ Route::prefix('invitation-rounds')->group(function () {
 
 Route::prefix('points-calculator')->group(function () {
     Route::get('/questions', [EoiController::class, 'getQuestions']);
+});
 
+Route::prefix('onboarding')->group(function () {
+    Route::get('/questions', [OnboardingController::class, 'questions']);
 });

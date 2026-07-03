@@ -27,6 +27,10 @@ class User extends Authenticatable
         'password',
         'provider_name',
         'provider_id',
+        'is_onboard',
+        'is_subscribed',
+        'is_eoi_signed_up',
+        'is_calculated',
     ];
 
     /**
@@ -49,6 +53,10 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_onboard' => 'boolean',
+            'is_subscribed' => 'boolean',
+            'is_eoi_signed_up' => 'boolean',
+            'is_calculated' => 'boolean',
         ];
     }
 

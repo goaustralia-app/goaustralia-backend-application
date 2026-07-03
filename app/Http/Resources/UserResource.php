@@ -19,14 +19,15 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'email_verified_at' => $this->email_verified_at,
-            'country_id' => $this->country_id,
-            'country' => $this->whenLoaded('country', function () {
-                return [
-                    'id' => $this->country->id,
-                    'name' => $this->country->name,
-                    'code' => $this->country->code,
-                ];
-            }),
+            'country' => $this->whenLoaded('country', fn () => $this->country ? [
+                'id' => $this->country->id,
+                'name' => $this->country->name,
+                'code' => $this->country->code,
+            ] : null),
+            'is_onboard' => $this->is_onboard,
+            'is_subscribed' => $this->is_subscribed,
+            'is_eoi_signed_up' => $this->is_eoi_signed_up,
+            'is_calculated' => $this->is_calculated,
             'provider_name' => $this->provider_name,
             'provider_id' => $this->provider_id,
             'is_social_user' => ! empty($this->provider_name),

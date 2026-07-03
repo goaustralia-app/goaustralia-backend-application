@@ -64,6 +64,8 @@ class EoiController extends Controller
 
             DB::commit();
 
+            Auth::user()->update(['is_calculated' => true]);
+
             $userResponses = PointsCalculator::with(['question', 'answer'])
                 ->where('user_id', $userId)
                 ->get();
