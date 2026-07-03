@@ -51,6 +51,7 @@ Route::prefix('visa-subclasses')->group(function () {
 
 Route::prefix('states-skilled-occupation-lists')->group(function () {
     Route::get('/', [StatesSkilledOccupationListController::class, 'index']);
+    Route::get('/by-state/{state}', [StatesSkilledOccupationListController::class, 'byState']);
     Route::get('/{id}', [StatesSkilledOccupationListController::class, 'show']);
 });
 

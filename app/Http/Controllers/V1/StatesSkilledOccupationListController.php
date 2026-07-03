@@ -36,6 +36,29 @@ class StatesSkilledOccupationListController extends BaseController
         }
     }
 
+    public function byState(string $state, Request $request): JsonResponse
+    {
+        try {
+            $filters = [
+                'subclass_id' => $request->get('subclass_id'),
+                'category' => $request->get('category'),
+                'financial_year' => $request->get('financial_year'),
+            ];
+
+            $filters = array_filter($filters, fn ($value) => $value !== null);
+
+            $result = $this->statesSkilledOccupationListService->getOccupationListByState($state, $filters);
+
+            if (! $result) {
+                return $this->errorResponse('State not found.', 404);
+            }
+
+            return $this->successResponse('States skilled occupation list retrieved successfully.', $result);
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
+
     public function show(int $id): JsonResponse
     {
         try {
