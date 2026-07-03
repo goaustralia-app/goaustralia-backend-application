@@ -6,6 +6,7 @@ use App\Http\Controllers\V1\CountryController;
 use App\Http\Controllers\V1\EoiSubmissionController;
 use App\Http\Controllers\V1\InvitationRoundController;
 use App\Http\Controllers\V1\OccupationListController;
+use App\Http\Controllers\V1\StatesSkilledOccupationListController;
 use App\Http\Controllers\V1\VisaSubclassController;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +47,11 @@ Route::prefix('occupation-lists')->group(function () {
 Route::prefix('visa-subclasses')->group(function () {
     Route::get('/', [VisaSubclassController::class, 'index']);
     Route::get('/{id}', [VisaSubclassController::class, 'show']);
+});
+
+Route::prefix('states-skilled-occupation-lists')->group(function () {
+    Route::get('/', [StatesSkilledOccupationListController::class, 'index']);
+    Route::get('/{id}', [StatesSkilledOccupationListController::class, 'show']);
 });
 
 Route::prefix('invitation-rounds')->group(function () {
