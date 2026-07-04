@@ -9,7 +9,6 @@ use App\Http\Resources\EoiQuestionResource;
 use App\Http\Resources\EoiSuggestionsResource;
 use App\Models\EoiAnswer;
 use App\Models\EoiQuestion;
-use App\Models\EoiUserResponse;
 use App\Models\PointsCalculator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -205,8 +204,7 @@ class EoiController extends Controller
                 ], 401);
             }
 
-            // Get user's current responses
-            $userResponses = EoiUserResponse::with(['question', 'answer'])
+            $userResponses = PointsCalculator::with(['question', 'answer'])
                 ->where('user_id', $userId)
                 ->get();
 
@@ -217,13 +215,11 @@ class EoiController extends Controller
                 ], 404);
             }
 
-            // Calculate current points
             $currentPoints = $userResponses->sum('points');
             $currentVisaSubclass = $this->getCurrentVisaSubclass($userResponses);
             $nominationPoints = $this->calculateNominationPoints($currentVisaSubclass);
             $totalCurrentPoints = $currentPoints + $nominationPoints;
 
-            // Generate suggestions
             $suggestions = $this->generateSuggestions($userResponses, $currentPoints);
             $alternativeVisaSuggestions = $this->getAlternativeVisaSuggestions($currentVisaSubclass, $currentPoints);
 
@@ -268,32 +264,29 @@ class EoiController extends Controller
         foreach ($userResponses as $response) {
             $category = $response->question->category;
             $currentAnswer = $response->answer;
-            $currentPoints = $response->points;
+            $responsePoints = $response->points;
 
-            // Skip visa selection category
             if ($category === 'Visa Selection') {
                 continue;
             }
 
-            // Get all answers for this question
             $allAnswers = EoiAnswer::where('eoi_question_id', $response->question->id)
                 ->where('is_active', true)
                 ->orderBy('points', 'desc')
                 ->get();
 
-            // Find better options
-            $betterOptions = $allAnswers->where('points', '>', $currentPoints);
+            $betterOptions = $allAnswers->where('points', '>', $responsePoints);
 
             if ($betterOptions->isNotEmpty()) {
                 $bestOption = $betterOptions->first();
-                $potentialGain = $bestOption->points - $currentPoints;
+                $potentialGain = $bestOption->points - $responsePoints;
 
                 $suggestions[] = [
                     'category' => $category,
                     'question' => $response->question->question,
                     'current_answer' => [
                         'text' => $currentAnswer->answer_text,
-                        'points' => $currentPoints,
+                        'points' => $responsePoints,
                     ],
                     'suggested_answer' => [
                         'text' => $bestOption->answer_text,
@@ -398,7 +391,7 @@ class EoiController extends Controller
         };
     }
 
-    private function getAlternativeVisaSuggestions(string $currentSubclass, int $currentPoints): array
+    private function getAlternativeVisaSuggestions(?string $currentSubclass, int $currentPoints): array
     {
         $alternatives = [];
 
