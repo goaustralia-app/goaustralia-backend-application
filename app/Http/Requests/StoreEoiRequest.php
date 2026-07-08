@@ -16,6 +16,9 @@ class StoreEoiRequest extends FormRequest
         return [
             'eoi_number' => ['required', 'string', 'max:255'],
             'submission_date' => ['required', 'date'],
+            'expiry_date' => ['nullable', 'date', 'after:submission_date'],
+            'state_nomination' => ['nullable', 'string', 'max:255'],
+            'notes' => ['nullable', 'string'],
             'subclass_id' => ['nullable', 'integer', 'exists:visa_subclasses,id'],
             'responses' => ['required', 'array'],
             'responses.*.question_id' => ['required', 'integer', 'exists:eoi_questions,id'],
@@ -29,6 +32,8 @@ class StoreEoiRequest extends FormRequest
             'eoi_number.required' => 'EOI number is required.',
             'submission_date.required' => 'Submission date is required.',
             'submission_date.date' => 'Submission date must be a valid date.',
+            'expiry_date.date' => 'Expiry date must be a valid date.',
+            'expiry_date.after' => 'Expiry date must be after the submission date.',
             'subclass_id.exists' => 'Invalid visa subclass.',
             'responses.required' => 'Please provide your responses to the EOI questions.',
             'responses.array' => 'Responses must be provided as an array.',

@@ -3,10 +3,14 @@
 use App\Http\Controllers\Api\EoiController;
 use App\Http\Controllers\V1\AuthController;
 use App\Http\Controllers\V1\CountryController;
+use App\Http\Controllers\V1\DocumentController;
+use App\Http\Controllers\V1\EoiHistoryController;
 use App\Http\Controllers\V1\EoiSubmissionController;
 use App\Http\Controllers\V1\InvitationRoundController;
+use App\Http\Controllers\V1\NotificationController;
 use App\Http\Controllers\V1\OccupationListController;
 use App\Http\Controllers\V1\OnboardingController;
+use App\Http\Controllers\V1\ReminderController;
 use App\Http\Controllers\V1\StatesSkilledOccupationListController;
 use App\Http\Controllers\V1\VisaSubclassController;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +36,27 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/', [EoiSubmissionController::class, 'store']);
         Route::get('/{id}', [EoiSubmissionController::class, 'show']);
         Route::put('/{id}', [EoiSubmissionController::class, 'update']);
+        Route::delete('/{id}', [EoiSubmissionController::class, 'destroy']);
+        Route::get('/{id}/history', [EoiHistoryController::class, 'index']);
+    });
+
+    Route::prefix('documents')->group(function () {
+        Route::get('/', [DocumentController::class, 'index']);
+        Route::post('/', [DocumentController::class, 'store']);
+        Route::get('/expiring', [DocumentController::class, 'expiring']);
+        Route::put('/{id}', [DocumentController::class, 'update']);
+        Route::delete('/{id}', [DocumentController::class, 'destroy']);
+    });
+
+    Route::prefix('reminders')->group(function () {
+        Route::get('/', [ReminderController::class, 'index']);
+        Route::patch('/{id}/read', [ReminderController::class, 'markRead']);
+    });
+
+    Route::prefix('notifications')->group(function () {
+        Route::get('/', [NotificationController::class, 'index']);
+        Route::patch('/{id}/read', [NotificationController::class, 'markRead']);
+        Route::patch('/read-all', [NotificationController::class, 'markAllRead']);
     });
 
     Route::prefix('onboarding')->group(function () {

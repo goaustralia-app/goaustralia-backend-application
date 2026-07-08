@@ -16,6 +16,9 @@ class EoiResource extends JsonResource
             'id' => $this->id,
             'eoi_number' => $this->eoi_number,
             'submission_date' => $this->submission_date?->toDateString(),
+            'expiry_date' => $this->expiry_date?->toDateString(),
+            'state_nomination' => $this->state_nomination,
+            'notes' => $this->notes,
             'total_points' => $this->total_points,
             'subclass' => $this->whenLoaded('subclass', fn () => [
                 'id' => $this->subclass->id,
